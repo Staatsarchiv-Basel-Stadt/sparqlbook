@@ -1,0 +1,12 @@
+# [endpoint=https://ld.bs.ch/query]
+PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX relSubType: <http://id.loc.gov/vocabulary/preservation/relationshipSubType/>
+PREFIX premis: <http://www.loc.gov/premis/rdf/v3/>
+PREFIX stabs-ext: <https://ld.bs.ch/RiC/vocabularies/extentTypes/>
+PREFIX stabs-rst: <https://ld.bs.ch/RiC/vocabularies/recordSetTypes/>
+PREFIX stabs-rico: <https://ld.bs.ch/ontologies/StABS-RiC/>
