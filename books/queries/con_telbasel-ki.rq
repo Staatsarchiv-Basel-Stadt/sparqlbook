@@ -1,5 +1,6 @@
 
 
+
 # [endpoint=https://ld.bs.ch/query]
 PREFIX adhoc: <http://adhoc>
 PREFIX dcterms: <http://purl.org/dc/terms/>
