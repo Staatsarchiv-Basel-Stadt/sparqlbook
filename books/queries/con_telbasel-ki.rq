@@ -1,4 +1,5 @@
 
+
 # [endpoint=https://ld.bs.ch/query]
 PREFIX adhoc: <http://adhoc>
 PREFIX dcterms: <http://purl.org/dc/terms/>
@@ -18,11 +19,13 @@ CONSTRUCT {?record ?allrecordprops ?allrecordobj ;
             rico:isAssociatedWithRule ?rule ;
             rico:hasOrHadDigitalInstantiation ?free_inst
             .
-           ?free_inst ?allfiprops ?allfivalues ;
+           ?free_inst ?allinprops ?allinvals ;
                       adhoc:download ?location
            .
-           ?rule ?ruleprops ?rulevalues .
+           ?file ?allfiprops ?allfivals .
+           ?rule ?ruleprops ?rulevals .
            ?ruletype ?allruleprops ?allrulevals .
+           ?rst ?allrstprops ?allrstvals
 }  
 
 
@@ -32,15 +35,21 @@ WHERE { GRAPH <https://ld.bs.ch/graph/ais-metadata>
             ?allrecordprops ?allrecordobj ;
             rico:isAssociatedWithDate/rico:expressedDate ?expr_date ;
             rico:isAssociatedWithRule ?rule ;
+            rico:hasRecordSetType ?rst ;
             ^rico:isOrWasDigitalInstantiationOf ?free_inst ;
             .
-    ?free_inst ?allfiprops ?allfivalues ;
+    ?free_inst ?allinprops ?allinvals ;
+               relSubType:hsp ?file ;
                relSubType:hsp/premis:storedAt/rdf:value ?location
-    . 
-    ?rule ?ruleprops ?rulevalues ;
+    .
+    ?file ?allfiprops ?allfivals
+    .
+    ?rule ?ruleprops ?rulevals ;
           rico:hasOrHadRuleType ?ruletype
     .
     ?ruletype ?allruleprops ?allrulevals
+    .
+    ?rst ?allrstprops ?allrstvals
     .
     }
 }
