@@ -20,11 +20,7 @@ SELECT ?ID ?record ?recordSetType ?Signatur ?Titel ?DLS_Link
        (GROUP_CONCAT(DISTINCT ?SerieTitel; separator="|") as ?SerienTitel) 
        (GROUP_CONCAT(DISTINCT ?Seriesignatur; separator="|") as ?SerienID) 
        (GROUP_CONCAT(DISTINCT ?SerieDatum; separator="|") as ?SerienDatum) 
-       ?Datum ?finalDate ?Abspieldauer ?fileURI ?conditionsOfAccess 
-       ?conditionsOfUse ?accessType ?description ?subject ?scopeAndContent 
-       ?genre ?keywords ?comments ?support ?rule 
-       (GROUP_CONCAT(DISTINCT REPLACE(?personRaw, "^\\-\\s*", ""); separator="; ") AS ?person)
-       ?ort
+       ?Datum ?finalDate ?Abspieldauer ?fileURI ?description ?content ?person ?ort
 
 WHERE {
   GRAPH <https://ld.bs.ch/graph/ais-metadata> {
@@ -55,6 +51,7 @@ WHERE {
     ?Serie rico:title ?SerieTitel ;
            rico:isAssociatedWithDate/rico:expressedDate ?SerieDatum . 
     
+    # Extract clean date values
     OPTIONAL { ?record rico:isAssociatedWithDate/rico:expressedDate ?Datum . 
       # Two options: single date or date range
       BIND (IF(contains(?Datum, "-"), ?Datum, "Null") AS ?DateRange)
@@ -102,33 +99,11 @@ WHERE {
               rico:quantity ?Abspieldauer . }
     OPTIONAL { ?inst rico:isOrWasDigitalInstantiationOf ?record ;
                      ^relSubType:isp/premis:storedAt/rdf:value ?fileURI. }
-    
-    OPTIONAL {?record rico:conditionsOfAccess ?conditionsOfAccess .}
-    OPTIONAL {?record rico:conditionsOfUse ?conditionsOfUse .
-      BIND(
-      COALESCE (
-        IF(regex(str(?conditionsOfUse), "Oeffentlich"), "public", 1/0),
-        IF(regex(str(?conditionsOfUse), "Freigegeben für Online-Zugänglichkeit"), "public", 1/0),
-        "private" ) as ?accessType)
-    }
-    OPTIONAL {?record rico:generalDescription ?description .
-    
-      BIND(STRBEFORE(STRAFTER(?description, "- Genre: "), "\n") AS ?genre)
-      BIND(STRBEFORE(STRAFTER(?description, "- Schlagworte: "), "\n") AS ?keywords)
-      BIND(STRBEFORE(STRAFTER(?description, "- Kommentare: "), "\n") AS ?comments)
-      BIND(STRAFTER(?description, "- Unterstützung bei der Erhaltung: ") AS ?support)
-    
-    }
-    OPTIONAL {?record rico:hasOrHadMainSubject ?subject .}
-    OPTIONAL {?record rico:scopeAndContent ?scopeAndContent .}
-    OPTIONAL { ?record rico:isAssociatedWithRule ?rule . }
-    OPTIONAL { 
-      ?record stabs-rico:person ?personRaw . 
-      BIND(REPLACE(?personRaw, "^\\-\\s*", "") AS ?personClean)
-    }
-    OPTIONAL {
-      ?record stabs-rico:ort ?ort
-    }
+    OPTIONAL {?record rico:note ?description .}
+    OPTIONAL {?record stabs-rico:content ?content .}
+    OPTIONAL { ?record stabs-rico:person ?person . }
+    OPTIONAL { ?record stabs-rico:ort ?ort . }
   }
 }
-GROUP BY ?ID ?record ?recordSetType ?Signatur ?Titel ?DLS_Link ?Datum ?finalDate ?Abspieldauer ?fileURI ?conditionsOfAccess ?conditionsOfUse ?accessType ?description ?subject ?scopeAndContent ?genre ?keywords ?comments ?support ?rule ?person ?ort
+GROUP BY ?ID ?record ?recordSetType ?Signatur ?Titel ?DLS_Link ?Datum ?finalDate ?Abspieldauer ?fileURI ?description ?content ?person ?ort
+LIMIT 50
