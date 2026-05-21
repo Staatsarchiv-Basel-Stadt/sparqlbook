@@ -1,6 +1,5 @@
 
 
-
 # [endpoint=https://ld.bs.ch/query]
 PREFIX adhoc: <http://adhoc>
 PREFIX dcterms: <http://purl.org/dc/terms/>
@@ -10,47 +9,96 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX relSubType: <http://id.loc.gov/vocabulary/preservation/relationshipSubType/>
 PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
 PREFIX schema: <http://schema.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX stabs-ext: <https://ld.bs.ch/RiC/vocabularies/extentTypes/>
 PREFIX stabs-rico: <https://ld.bs.ch/ontologies/StABS-RiC/>
 PREFIX stabs-rst: <https://ld.bs.ch/RiC/vocabularies/recordSetTypes/>
 PREFIX void: <http://rdfs.org/ns/void#>
 
-CONSTRUCT {?record ?allrecordprops ?allrecordobj ;
-            adhoc:expressedDate ?expr_date ;
-            rico:isAssociatedWithRule ?rule ;
-            rico:hasOrHadDigitalInstantiation ?free_inst
-            .
-           ?free_inst ?allinprops ?allinvals ;
-                      adhoc:download ?location
-           .
-           ?file ?allfiprops ?allfivals .
-           ?rule ?ruleprops ?rulevals .
-           ?ruletype ?allruleprops ?allrulevals .
-           ?rst ?allrstprops ?allrstvals
-}  
+CONSTRUCT {
+  ?s ?p ?o .
+}
+WHERE {
 
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" .
+    ?record ?p ?o .
+    BIND(?record AS ?s)
+  }
 
-WHERE { GRAPH <https://ld.bs.ch/graph/ais-metadata> 
-    {
+  UNION
+  
+  {
     ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
-            ?allrecordprops ?allrecordobj ;
-            rico:isAssociatedWithDate/rico:expressedDate ?expr_date ;
-            rico:isAssociatedWithRule ?rule ;
-            rico:hasRecordSetType ?rst ;
-            ^rico:isOrWasDigitalInstantiationOf ?free_inst ;
-            .
-    ?free_inst ?allinprops ?allinvals ;
-               relSubType:hsp ?file ;
-               relSubType:hsp/premis:storedAt/rdf:value ?location
-    .
-    ?file ?allfiprops ?allfivals
-    .
-    ?rule ?ruleprops ?rulevals ;
-          rico:hasOrHadRuleType ?ruletype
-    .
-    ?ruletype ?allruleprops ?allrulevals
-    .
-    ?rst ?allrstprops ?allrstvals
-    .
-    }
+            rico:isAssociatedWithDate ?date .
+    
+    ?date ?p ?o .
+    BIND(?date AS ?s)
+  }
+      
+  UNION
+
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            ^rico:isOrWasDigitalInstantiationOf ?free_inst .
+
+    ?free_inst ?p ?o .
+    BIND(?free_inst AS ?s)
+  }
+
+  UNION
+
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            ^rico:isOrWasDigitalInstantiationOf ?free_inst .
+
+    ?free_inst relSubType:hsp ?file .
+
+    ?file ?p ?o .
+    BIND(?file AS ?s)
+  }
+  
+  UNION
+  
+  {
+     ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+             rico:isAssociatedWithRule ?rule .
+    ?rule ?p ?o .
+    BIND(?rule AS ?s)
+  }
+  UNION
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            rico:isAssociatedWithRule/rico:hasOrHadRuleType ?ruletype .
+    ?ruletype ?p ?o .
+    BIND(?ruletype AS ?s)
+  }
+  UNION
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            rico:hasRecordSetType ?rst .
+    ?rst ?p ?o .
+    BIND(?rst AS ?s)
+  }
+    UNION
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            rico:hasRecordSetType/rdfs:subClassOf ?ricrst .
+    ?ricrst ?p ?o .
+    BIND(?ricrst AS ?s)
+  }
+  UNION
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            rico:hasRecordSetType/skos:topConceptOf ?conc .
+    ?conc ?p ?o .
+    BIND(?conc AS ?s)
+  }
+  UNION
+  {
+    ?record rico:identifier "PÖA-REG 17a 4-2 (1) 4" ;
+            rico:hasRecordSetType/rdfs:subClassOf/skos:inScheme ?scheme .
+    ?scheme ?p ?o .
+    BIND(?scheme AS ?s)
+  }
 }
