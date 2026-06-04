@@ -10,7 +10,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
 PREFIX stabs-acr: <https://ld.bs.ch/RiC/vocabularies/acRules/>
 
-SELECT ?r ?title ?signatur ?viewer ?iiif
+SELECT ?r ?title ?signatur ?date ?viewer ?iiif
 WHERE {
   GRAPH <https://ld.bs.ch/graph/ais-metadata> 
   {
@@ -20,7 +20,8 @@ WHERE {
     ?r rico:isAssociatedWithRule stabs-acr:free-online ;
        rico:title ?title ;
        rico:type ?archivalienart ;
-       rico:identifier ?signatur
+       rico:identifier ?signatur ;
+       rico:isAssociatedWithDate/rico:expressedDate ?date
        .
     filter(regex(?title, 'Petersgraben'))
     filter(regex(?archivalienart, 'Bild'))
