@@ -1,0 +1,25 @@
+
+
+# [endpoint=https://ld.bs.ch/query]
+PREFIX void: <http://rdfs.org/ns/void#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+
+SELECT *
+WHERE {
+  GRAPH <https://ld.bs.ch/graph/ais-metadata> 
+  {
+  {?s a rico:Record}
+  UNION
+  {?s a rico:RecordResource}
+  }
+  ?s rico:isAssociatedWithRule <https://ld.bs.ch/RiC/vocabularies/acRules/free-online> ;
+     rico:title ?title ;
+     rico:type ?archivalienart .
+  filter(regex(?title, 'Aeschenplatz'))
+  filter(regex(?archivalienart, 'Bild'))
+}
+LIMIT 1000

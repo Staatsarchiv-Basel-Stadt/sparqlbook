@@ -1,0 +1,10 @@
+[
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file queries/hackathon-hgb-01.rq\r\n\r\n# [endpoint=https://ld.bs.ch/query]\r\nPREFIX void: <http://rdfs.org/ns/void#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX schema: <http://schema.org/>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX rico: <https://www.ica.org/standards/RiC/ontology#>\r\n\r\nSELECT *\r\nWHERE {\r\n  GRAPH <https://ld.bs.ch/graph/ais-metadata> \r\n  {\r\n  {?s a rico:Record}\r\n  UNION\r\n  {?s a rico:RecordResource}\r\n  }\r\n  ?s rico:isAssociatedWithRule <https://ld.bs.ch/RiC/vocabularies/acRules/free-online> ;\r\n     rico:title ?title ;\r\n     rico:type ?archivalienart .\r\n  filter(regex(?title, 'Aeschenplatz'))\r\n  filter(regex(?archivalienart, 'Bild'))\r\n}\r\nLIMIT 1000",
+    "metadata": {
+      "file": "queries/hackathon-hgb-01.rq"
+    }
+  }
+]
