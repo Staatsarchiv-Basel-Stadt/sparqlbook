@@ -1,0 +1,16 @@
+[
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "# ALOD-Reloaded\r\nSPARQL-Queries für Tests spezifisch auf StABS-Datenmodell",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file queries/alod-reloaded-01.rq\r\n\r\n# [endpoint=https://ld.bs.ch/query]\r\nPREFIX void: <http://rdfs.org/ns/void#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX schema: <http://schema.org/>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX rico: <https://www.ica.org/standards/RiC/ontology#>\r\nPREFIX relSubType: <http://id.loc.gov/vocabulary/preservation/relationshipSubType/>\r\nPREFIX premis: <http://www.loc.gov/premis/rdf/v3/>\r\nPREFIX stabs-ext: <https://ld.bs.ch/RiC/vocabularies/extentTypes/>\r\nPREFIX stabs-rst: <https://ld.bs.ch/RiC/vocabularies/recordSetTypes/>\r\nPREFIX stabs-rico: <https://ld.bs.ch/ontologies/StABS-RiC/>\r\n\r\nSELECT *\r\nWHERE {\r\n  GRAPH <https://ld.bs.ch/graph/ais-metadata> {\r\n\t?RRStabs a ?n;\r\n                rico:title ?RRStabsTitlle;\r\n                rico:history ?RRStabsContent;\r\n               rico:note ?RRStabsNote;\t    \r\n FILTER (?n = rico:RecordSet  || ?n = rico:Record)\r\n}\r\n}",
+    "metadata": {
+      "file": "queries/alod-reloaded-01.rq"
+    }
+  }
+]
